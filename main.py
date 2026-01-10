@@ -64,7 +64,7 @@ def send_discord_message():
         ]
     }
 
-    response = requests.post('https://discord.com/api/webhooks/1459681489397485629/gt3lfPPb8shykNvo3m0QldljCI3PPmV9LYJOwWzzusqWpxTLirQhWpIa4QmOn0EtMQ6O', json=payload)
+    response = requests.post('DISCORD_WEBHOOK_URL', json=payload)
 
     if response.status_code == 204:
         print("Dual-event message sent successfully.")
