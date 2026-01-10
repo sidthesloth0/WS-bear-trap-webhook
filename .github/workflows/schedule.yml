@@ -1,0 +1,30 @@
+name: Bear Trap Reminder
+
+on:
+  schedule:
+    # Cron Schedule.
+    - cron: '0 12 * * *' 
+  
+  # allows for manual testing
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Bot Script
+        env:
+          # This pulls the secret you saved in Step 2
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python bot.py
