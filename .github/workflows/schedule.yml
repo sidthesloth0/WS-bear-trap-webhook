@@ -27,4 +27,4 @@ jobs:
         env:
           # This pulls the secret you saved in Step 2
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python bot.py
+        run: python main.py
