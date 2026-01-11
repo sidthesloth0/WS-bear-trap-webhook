@@ -41,7 +41,7 @@ def send_discord_message():
         "embeds": [
             {
                 "title": "Bear Trap Schedule",
-                "description": "Here are the times for the next two event occurrences:",
+                "description": "Here are the times for the next two Bear Traps:",
                 "color": 5814783,  # A nice blue/purple hex color
                 "fields": [
                     {
