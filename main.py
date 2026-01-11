@@ -8,11 +8,9 @@ WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 INTERVAL_HOURS = 48
 
 # EVENT 1 ANCHOR: (Year, Month, Day, Hour, Minute, Second) in UTC
-# Example: This one started Oct 25th at 6:00 PM UTC
 START_DATE_1 = datetime.datetime(2026, 1, 11, 18, 30, 0, tzinfo=datetime.timezone.utc)
 
 # EVENT 2 ANCHOR: (Year, Month, Day, Hour, Minute, Second) in UTC
-# Example: This one started Oct 26th at 8:00 AM UTC (14 hours after the first)
 START_DATE_2 = datetime.datetime(2026, 1, 12, 5, 30, 0, tzinfo=datetime.timezone.utc)
 
 
