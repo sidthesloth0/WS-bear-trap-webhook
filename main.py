@@ -8,10 +8,10 @@ WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 INTERVAL_HOURS = 48
 
 # EVENT 1 ANCHOR: (Year, Month, Day, Hour, Minute, Second) in UTC
-START_DATE_1 = datetime.datetime(2026, 1, 11, 18, 30, 0, tzinfo=datetime.timezone.utc)
+START_DATE_1 = datetime.datetime(2026, 1, 16, 18, 30, 0, tzinfo=datetime.timezone.utc)
 
 # EVENT 2 ANCHOR: (Year, Month, Day, Hour, Minute, Second) in UTC
-START_DATE_2 = datetime.datetime(2026, 1, 12, 5, 30, 0, tzinfo=datetime.timezone.utc)
+START_DATE_2 = datetime.datetime(2026, 1, 16, 5, 30, 0, tzinfo=datetime.timezone.utc)
 
 
 # ---------------------------------------------------------
