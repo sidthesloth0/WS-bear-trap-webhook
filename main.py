@@ -82,6 +82,7 @@ def process_alert(event_name, event_time, role_id):
         print(f"⚠️ Slightly late for {event_name}. Sending immediately.")
         send_alert(event_name, event_time, role_id)
 
+
 def main():
     if not WEBHOOK_URL:
         print("Error: Webhook URL missing.")
@@ -90,35 +91,42 @@ def main():
     now = datetime.datetime.now(datetime.timezone.utc)
 
     # ------------------------------------------------------
-    # TASK 1: CHECK FOR DAILY SCHEDULE (Run only at 12:00 UTC)
+    # TASK 1: CHECK FOR DAILY SCHEDULE
     # ------------------------------------------------------
-    # Since script runs at 12:15, now.hour is still 12.
-    if now.hour == 12:
-        print("It is the 12:00 hour. Sending Daily Schedule...")
+    # FIX: Removed the inner 'if now.hour == 12' check.
+    # Now, if it lags to 13:10, it will still successfully send the schedule.
+    if now.hour == 12 or (now.hour == 13 and now.minute < 30):
+        print(f"It is {now.strftime('%H:%M')} UTC. Sending Daily Schedule...")
         send_daily_schedule()
 
     # ------------------------------------------------------
-    # TASK 2: CHECK FOR ALERTS
+    # TASK 2: CHECK FOR ALERTS (Lag-Proof Logic)
     # ------------------------------------------------------
-    # lookahead is 25 mins.
-    # Current Time: XX:15. Event Time: XX:30.
-    # The event is 15 minutes away, so it falls safely inside this window.
-    lookahead_window = 25 * 60
+
+    # MAX LIMIT: 100 Minutes.
+    # This allows the 4:00 script to see the 5:30 event (90 mins away + 10 minute buffer).
+    max_lookahead = 100 * 60
+
+    # MIN LIMIT: 20 Minutes.
+    # If the event is in 30 mins (e.g. 5:00 script looking at 5:30), ignore it.
+    # We assume the PREVIOUS run (4:00) already grabbed it.
+    min_lookahead = 25 * 60
 
     # --- Check Event 1 ---
     next_1 = get_next_event_time(START_DATE_1, INTERVAL_HOURS)
     seconds_until_1 = (next_1 - now).total_seconds()
 
-    # Simple check: Is the event coming up in the next hour?
-    if 0 < seconds_until_1 <= lookahead_window:
+    # LOGIC: Only catch events that are between 20 and 90 minutes away.
+    if min_lookahead < seconds_until_1 <= max_lookahead:
         process_alert("Bear Trap 1", next_1, ROLE_ID_1)
 
     # --- Check Event 2 ---
     next_2 = get_next_event_time(START_DATE_2, INTERVAL_HOURS)
     seconds_until_2 = (next_2 - now).total_seconds()
 
-    if 0 < seconds_until_2 <= lookahead_window:
+    if min_lookahead < seconds_until_2 <= max_lookahead:
         process_alert("Bear Trap 2", next_2, ROLE_ID_2)
+
 
 if __name__ == "__main__":
     main()
