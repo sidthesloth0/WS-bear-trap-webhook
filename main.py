@@ -37,7 +37,7 @@ def send_daily_schedule():
     payload = {
         "content": "📢 **Daily Schedule Update**",
         "embeds": [{
-            "title": "Upcoming 48-Hour Events",
+            "title": "Upcoming Bear Traps in the next 48-Hours",
             "description": "Here is the schedule for the upcoming Bear Traps:",
             "color": 5814783,
             "fields": [
