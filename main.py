@@ -127,7 +127,7 @@ def main():
     # SMART LOGIC 3 (Top of the hour event):
     # Uses the LOW threshold (10 mins) just like Event 1.
     if 10 * 60 < seconds_until_3 <= max_lookahead:
-        process_alert("Bear Trap 3", next_3, ROLE_ID_3)
+        process_alert("CNA Bear Trap 2", next_3, ROLE_ID_3)
 
 if __name__ == "__main__":
     main()
