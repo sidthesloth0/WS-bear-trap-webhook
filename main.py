@@ -9,15 +9,15 @@ INTERVAL_HOURS = 48
 WARNING_MINUTES = 3
 
 # event 1
-START_DATE_1 = datetime.datetime(2026, 3, 3, 18, 30, 0, tzinfo=datetime.timezone.utc)
+START_DATE_1 = datetime.datetime(2026, 4, 22, 18, 30, 0, tzinfo=datetime.timezone.utc)
 ROLE_ID_1 = "1464765731336880222"
 
 # event 2
-START_DATE_2 = datetime.datetime(2026, 3, 4, 6, 0, 0, tzinfo=datetime.timezone.utc)
+START_DATE_2 = datetime.datetime(2026, 4, 22, 5, 0, 0, tzinfo=datetime.timezone.utc)
 ROLE_ID_2 = "1464766114981478430"
 
 # event 3
-START_DATE_3 = datetime.datetime(2026, 3, 14, 17, 0, 0, tzinfo=datetime.timezone.utc)
+START_DATE_3 = datetime.datetime(2026, 4, 22, 23, 0, 0, tzinfo=datetime.timezone.utc)
 ROLE_ID_3 = "1482438218900312207"
 # ---------------------------------------------------------
 
@@ -47,25 +47,38 @@ def send_daily_schedule():
             "fields": [
                 {"name": "Bear Trap 1", "value": f"<t:{ts_1}:F>\n(<t:{ts_1}:R>)", "inline": False},
                 {"name": "Bear Trap 2", "value": f"<t:{ts_2}:F>\n(<t:{ts_2}:R>)", "inline": False},
-                {"name": "CNA Bear Trap 2", "value": f"<t:{ts_3}:F>\n(<t:{ts_3}:R>)", "inline": False}
+                {"name": "Bear Trap 3", "value": f"<t:{ts_3}:F>\n(<t:{ts_3}:R>)", "inline": False}
             ]
         }]
     }
     requests.post(WEBHOOK_URL, json=payload)
-    print("✅ Daily schedule sent.")
+    print("Daily schedule sent.")
+
 
 def send_alert(event_name, event_time, role_id):
     ts = int(event_time.timestamp())
-    payload = {
-        "content": f"🚨 **HEADS UP <@&{role_id}>!**",
-        "embeds": [{
-            "title": f"⚔️ {event_name} is Starting in {WARNING_MINUTES} minutes!",
-            "description": f"Prepare yourselves! The bear trap begins <t:{ts}:R> at <t:{ts}:t>!",
-            "color": 15548997,  # Red
-        }]
-    }
+
+    if event_name == "Bear Trap 3":
+        payload = {
+            "content": f"🚨 **HEADS UP <@&{role_id}>!**",
+            "embeds": [{
+                "title": f"🚨 {event_name} is starting in {WARNING_MINUTES} minutes!",
+                "description": f"Join CNA if you haven't already. It begins <t:{ts}:R> at <t:{ts}:t>!",
+                "color": 15548997, # red
+            }]
+        }
+    else:
+        payload = {
+            "content": f"🚨 **HEADS UP <@&{role_id}>!**",
+            "embeds": [{
+                "title": f"⚔️ {event_name} is starting in {WARNING_MINUTES} minutes!",
+                "description": f"Prepare yourselves! The bear trap begins <t:{ts}:R> at <t:{ts}:t>!",
+                "color": 15548997,  # red
+            }]
+        }
+
     requests.post(WEBHOOK_URL, json=payload)
-    print(f"✅ Alert sent for {event_name}.")
+    print(f"Alert sent for {event_name}.")
 
 def process_alert(event_name, event_time, role_id):
     now = datetime.datetime.now(datetime.timezone.utc)
@@ -110,16 +123,14 @@ def main():
     if 10 * 60 < seconds_until_1 <= max_lookahead:
         process_alert("Bear Trap 1", next_1, ROLE_ID_1)
 
-    # --- Check Event 2 ---
+    # check event 2: 05:00
     next_2 = get_next_event_time(START_DATE_2, INTERVAL_HOURS)
     seconds_until_2 = (next_2 - now).total_seconds()
 
-    # event is at XX:30. We rely on the previous hour's script (e.g. 17:00 run for 18:30 event)
-    # set a high threshold (45 mins) so the 18:00 run ignores it, preventing double ping.
-    if 45 * 60 < seconds_until_2 <= max_lookahead:
+    if 35 * 60 < seconds_until_2 <= max_lookahead:
         process_alert("Bear Trap 2", next_2, ROLE_ID_2)
 
-    # --- Check Event 3 (17:00 UTC) ---
+    # check event 3: 23:00
     # Assuming you named your variables START_DATE_3 and ROLE_ID_3
     next_3 = get_next_event_time(START_DATE_3, INTERVAL_HOURS)
     seconds_until_3 = (next_3 - now).total_seconds()
