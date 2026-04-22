@@ -65,7 +65,7 @@ def send_alert(event_name, event_time, role_id):
             "embeds": [{
                 "title": f"🔥 {event_name} is Starting in {WARNING_MINUTES} minutes!",
                 "description": f"Join CNA if you haven't already. It begins <t:{ts}:R> at <t:{ts}:t>!",
-                "color": 16753920,  # Orange
+                "color": 15548997,  # red
             }]
         }
     else:
