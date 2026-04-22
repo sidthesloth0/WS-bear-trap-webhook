@@ -103,7 +103,7 @@ def main():
     now = datetime.datetime.now(datetime.timezone.utc)
 
     # 1. DAILY SCHEDULE
-    if True: # now.hour == 12 or (now.hour == 13 and now.minute < 30):
+    if now.hour == 12 or (now.hour == 13 and now.minute < 30):
         print(f"It is {now.strftime('%H:%M')} UTC. Sending Daily Schedule...")
         send_daily_schedule()
 
