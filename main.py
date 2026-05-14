@@ -18,7 +18,7 @@ START_DATE_2 = datetime.datetime(2026, 4, 22, 5, 0, 0, tzinfo=datetime.timezone.
 ROLE_ID_2 = "1464766114981478430"
 
 # EVENT 3 (23:00 UTC)
-START_DATE_3 = datetime.datetime(2026, 4, 22, 23, 0, 0, tzinfo=datetime.timezone.utc)
+START_DATE_3 = datetime.datetime(2026, 4, 22, 22, 0, 0, tzinfo=datetime.timezone.utc)
 ROLE_ID_3 = "1482438218900312207"
 
 
